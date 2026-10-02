@@ -8,9 +8,9 @@
  * QR code generation, hashing, UUID generation, DNS lookup, and more.
  *
  * Usage:
- *   npx @toolpipe/mcp-server
- *   TOOLPIPE_API_KEY=tp_xxx npx @toolpipe/mcp-server
- *   TOOLPIPE_BASE_URL=https://your-instance.com npx @toolpipe/mcp-server
+ *   npx @cosai-labs/toolpipe-mcp-server
+ *   TOOLPIPE_API_KEY=tp_xxx npx @cosai-labs/toolpipe-mcp-server
+ *   TOOLPIPE_BASE_URL=https://your-instance.com npx @cosai-labs/toolpipe-mcp-server
  */
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
