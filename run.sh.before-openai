@@ -6,7 +6,7 @@
 # Roles: main (default), builder, researcher, growth
 # Each role uses a different prompt and log file.
 
-PROJECT_DIR="/home/shubhu/ai-money-farm/reference-make-money"
+PROJECT_DIR="/home/GerritRoskaBot/make-money-30day-challenge"
 ROLE="${1:-main}"
 LOG_FILE="$PROJECT_DIR/logs/runner-${ROLE}.log"
 RESTART_COUNT=0
@@ -19,13 +19,13 @@ case "$ROLE" in
         PROMPT_FILE="$PROJECT_DIR/agents/restart-prompt.txt"
         ;;
     builder)
-        PROMPT="You are the BUILDER for the Make Money 30-Day Challenge. cd /home/shubhu/ai-money-farm/reference-make-money && git pull. Read CLAUDE.md, logs/handoff.md, logs/research/003-actionable-monetization-and-distribution.md. EXECUTE the top priorities: 1) Sign up for OxaPay at https://app.oxapay.com/register using ouryellowbuddha@gmail.com. 2) Integrate crypto payments into the API. 3) Package top APIs as an MCP server npm package. 4) Build whatever research/growth says is needed. git add -A && git commit -m 'Build: [summary]' && git push."
+        PROMPT="You are the BUILDER for the Make Money 30-Day Challenge. cd /home/GerritRoskaBot/make-money-30day-challenge && git pull. Read CLAUDE.md, logs/handoff.md, logs/research/003-actionable-monetization-and-distribution.md. EXECUTE the top priorities: 1) Sign up for OxaPay at https://app.oxapay.com/register using ouryellowbuddha@gmail.com. 2) Integrate crypto payments into the API. 3) Package top APIs as an MCP server npm package. 4) Build whatever research/growth says is needed. git add -A && git commit -m 'Build: [summary]' && git push."
         ;;
     researcher)
-        PROMPT="You are the RESEARCHER for the Make Money 30-Day Challenge. cd /home/shubhu/ai-money-farm/reference-make-money && git pull. Read CLAUDE.md, logs/research/. Use WebSearch and WebFetch to find NEW monetization opportunities, distribution channels, and ways to get users. Focus on what's working and double down. Write to logs/research/. git add -A && git commit -m 'Research: [summary]' && git push."
+        PROMPT="You are the RESEARCHER for the Make Money 30-Day Challenge. cd /home/GerritRoskaBot/make-money-30day-challenge && git pull. Read CLAUDE.md, logs/research/. Use WebSearch and WebFetch to find NEW monetization opportunities, distribution channels, and ways to get users. Focus on what's working and double down. Write to logs/research/. git add -A && git commit -m 'Research: [summary]' && git push."
         ;;
     growth)
-        PROMPT="You are GROWTH for the Make Money 30-Day Challenge. cd /home/shubhu/ai-money-farm/reference-make-money && git pull. Read logs/research/003-actionable-monetization-and-distribution.md. EXECUTE distribution: 1) Submit to MCP registries (pulsemcp.com/submit, smithery.ai/new). 2) Submit to dev tool directories. 3) Create dev.to articles via API. 4) Submit GitHub PRs to public-apis. 5) Post to Reddit. Log ALL actions in logs/growth/. git add -A && git commit -m 'Growth: [summary]' && git push."
+        PROMPT="You are GROWTH for the Make Money 30-Day Challenge. cd /home/GerritRoskaBot/make-money-30day-challenge && git pull. Read logs/research/003-actionable-monetization-and-distribution.md. EXECUTE distribution: 1) Submit to MCP registries (pulsemcp.com/submit, smithery.ai/new). 2) Submit to dev tool directories. 3) Create dev.to articles via API. 4) Submit GitHub PRs to public-apis. 5) Post to Reddit. Log ALL actions in logs/growth/. git add -A && git commit -m 'Growth: [summary]' && git push."
         ;;
     *)
         echo "Unknown role: $ROLE. Use: main, builder, researcher, growth"
@@ -59,7 +59,7 @@ while true; do
         CURRENT_PROMPT="$PROMPT"
     fi
 
-    codex exec --cd "$PROJECT_DIR" --approve-for-me "$CURRENT_PROMPT" 2>> "$LOG_FILE"
+    claude --dangerously-skip-permissions -p "$CURRENT_PROMPT" 2>> "$LOG_FILE"
 
     EXIT_CODE=$?
     TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')

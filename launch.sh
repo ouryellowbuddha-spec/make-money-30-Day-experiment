@@ -3,7 +3,7 @@
 # Each role runs in its own tmux window, auto-restarts on exit
 # Usage: ./launch.sh
 
-PROJECT_DIR="/home/GerritRoskaBot/make-money-30day-challenge"
+PROJECT_DIR="/home/shubhu/ai-money-farm/reference-make-money"
 SESSION="make-money"
 
 # Kill existing session if any

@@ -37,7 +37,7 @@ app = FastAPI(
     title="ToolPipe API",
     description="240+ developer utility APIs. Web scraping, domain intelligence, bulk operations, API testing, sitemap parsing, content monitoring, code review, fake data, JSON Schema validation, security headers, API client generation, CSV analysis, code minification, QR codes, PDF tools, hashing, UUID, DNS, regex, JWT, SQL formatting, XML/YAML, text stats, and more. Free tier: 100 calls/day. Pro: 10,000 calls/day ($9.99/mo). Credits: 1K for $4.99. Pay with crypto, no KYC.",
     version="1.19.0",
-    contact={"name": "ToolPipe", "url": "https://toolpipe.dev", "email": "toolpipe-ads@sharebot.net"},
+    contact={"name": "ToolPipe", "url": "https://toolpipe.dev", "email": "ouryellowbuddha@gmail.com"},
     license_info={"name": "MIT", "url": "https://opensource.org/licenses/MIT"},
     servers=[{"url": "https://toolpipe.dev", "description": "Production"}],
 )
@@ -63,8 +63,8 @@ async def favicon():
 # x402 crypto payments (USDC on Base Sepolia)
 # Premium endpoints return HTTP 402 with payment instructions
 # AI agents and developers pay per-call via USDC
-WALLET_ADDRESS = "0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6"
-SOLANA_WALLET = os.environ.get("SOLANA_WALLET", "2guKDsPScRpCCKuVEGKBPFvodSNtZF4ArYeSC6oy6pf6")
+WALLET_ADDRESS = "0x170bAA39eC38aFEba8ce5847Bc231965aa200d00"
+SOLANA_WALLET = os.environ.get("SOLANA_WALLET", "AP2EeHDf6qQtZAY25QxcR2HG5aULJ2Ny5m81Unmw2guw")
 SOLANA_RPC = "https://api.mainnet-beta.solana.com"
 X402_ENABLED = False
 try:
@@ -249,15 +249,15 @@ h1{font-size:2.5rem;text-align:center;margin-bottom:8px;color:#fff}
 <div id="checkout-step2" style="display:none">
 <div style="background:#111;border:1px solid #22c55e;border-radius:12px;padding:20px;margin-bottom:16px">
 <p style="color:#22c55e;font-weight:700;margin-bottom:8px">Send crypto to this address:</p>
-<code style="color:#22c55e;font-size:0.85rem;word-break:break-all;display:block;margin-bottom:8px">0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6</code>
-<button onclick="navigator.clipboard.writeText('0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Address',2000)" style="background:#22c55e;color:#000;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600">Copy Address</button>
+<code style="color:#22c55e;font-size:0.85rem;word-break:break-all;display:block;margin-bottom:8px">0x170bAA39eC38aFEba8ce5847Bc231965aa200d00</code>
+<button onclick="navigator.clipboard.writeText('0x170bAA39eC38aFEba8ce5847Bc231965aa200d00');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy Address',2000)" style="background:#22c55e;color:#000;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600">Copy Address</button>
 </div>
 <p style="color:#94a3b8;font-size:0.9rem;margin-bottom:4px">Amount: <strong style="color:#fff" id="checkout-amount">$9.99</strong> in any supported crypto</p>
 <p style="color:#64748b;font-size:0.85rem;margin-bottom:8px">EVM Networks: Ethereum, Polygon, Arbitrum, Base, Optimism</p>
 <div style="background:#111;border:1px solid #8b5cf6;border-radius:8px;padding:12px;margin-bottom:16px">
 <p style="color:#8b5cf6;font-weight:600;font-size:0.85rem;margin-bottom:4px">Solana (SOL, USDC-SPL):</p>
-<code style="color:#8b5cf6;font-size:0.8rem;word-break:break-all;display:block;margin-bottom:6px">2guKDsPScRpCCKuVEGKBPFvodSNtZF4ArYeSC6oy6pf6</code>
-<button onclick="navigator.clipboard.writeText('2guKDsPScRpCCKuVEGKBPFvodSNtZF4ArYeSC6oy6pf6');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy SOL Address',2000)" style="background:#8b5cf6;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem">Copy SOL Address</button>
+<code style="color:#8b5cf6;font-size:0.8rem;word-break:break-all;display:block;margin-bottom:6px">AP2EeHDf6qQtZAY25QxcR2HG5aULJ2Ny5m81Unmw2guw</code>
+<button onclick="navigator.clipboard.writeText('AP2EeHDf6qQtZAY25QxcR2HG5aULJ2Ny5m81Unmw2guw');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy SOL Address',2000)" style="background:#8b5cf6;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem">Copy SOL Address</button>
 </div>
 <p style="color:#64748b;font-size:0.85rem;margin-bottom:16px">Order ID: <code id="checkout-order-id" style="color:#6c63ff"></code></p>
 
@@ -4831,7 +4831,7 @@ h1{font-size:2.5rem;color:#fff;text-align:center;margin-bottom:8px}
 <div class="faq-item"><h3>How does crypto payment work?</h3><p>Click "Upgrade to Pro" or "Get Enterprise", enter your email, and you will be redirected to a secure crypto payment page. Once payment confirms, your API key is automatically upgraded.</p></div>
 <div class="faq-item"><h3>Can AI agents use this API?</h3><p>Yes! ToolPipe is designed for both human developers and AI agents. Use our MCP server package or call the REST API directly. Agents can self-register for API keys and upgrade via crypto.</p></div>
 <div class="faq-item"><h3>What endpoints are included?</h3><p>All plans include access to all 175+ endpoints: JSON formatting, PDF tools, QR codes, hash generation, UUID, DNS lookup, image processing, text analysis, and more. See <a href="/docs" style="color:#6c63ff">/docs</a> for the full list.</p></div>
-<div class="faq-item"><h3>Is there a refund policy?</h3><p>Due to the nature of crypto payments, refunds are handled case-by-case. Contact toolpipe-ads@sharebot.net.</p></div>
+<div class="faq-item"><h3>Is there a refund policy?</h3><p>Due to the nature of crypto payments, refunds are handled case-by-case. Contact ouryellowbuddha@gmail.com.</p></div>
 </div>
 
 <div class="links">
@@ -4853,8 +4853,8 @@ h1{font-size:2.5rem;color:#fff;text-align:center;margin-bottom:8px}
 <p id="pay-status" style="color:#94a3b8;margin-top:12px;font-size:0.9rem;text-align:center;display:none"></p>
 <div style="margin-top:16px;padding-top:16px;border-top:1px solid #2a2a2a">
 <p style="color:#64748b;font-size:0.8rem;text-align:center">Or send crypto directly:</p>
-<p style="color:#22c55e;font-family:monospace;font-size:0.75rem;text-align:center;word-break:break-all;margin-top:4px">0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6</p>
-<p style="color:#64748b;font-size:0.75rem;text-align:center;margin-top:4px">Then email toolpipe-ads@sharebot.net with tx hash</p>
+<p style="color:#22c55e;font-family:monospace;font-size:0.75rem;text-align:center;word-break:break-all;margin-top:4px">0x170bAA39eC38aFEba8ce5847Bc231965aa200d00</p>
+<p style="color:#64748b;font-size:0.75rem;text-align:center;margin-top:4px">Then email ouryellowbuddha@gmail.com with tx hash</p>
 </div>
 </div>
 </div>
@@ -4905,7 +4905,7 @@ async function submitPayment() {
               '<div style="margin-top:12px"><input id="verify-tx-hash" placeholder="Paste your tx hash (0x...)" style="width:100%;background:#111;border:1px solid #2a2a2a;color:#e0e0e0;padding:10px;border-radius:6px;font-size:0.85rem;font-family:monospace;margin-bottom:8px">' +
               '<button onclick="verifyTx(\\''+oid+'\\',document.getElementById(\\'verify-tx-hash\\').value)" style="width:100%;background:#22c55e;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:600;cursor:pointer">Verify Payment On-Chain</button>' +
               '<p id="verify-result" style="margin-top:8px;font-size:0.85rem;text-align:center"></p></div>' +
-              '<p style="margin-top:8px;color:#64748b;font-size:0.75rem;text-align:center">Or email <a href="mailto:toolpipe-ads@sharebot.net?subject=Payment%20' + oid + '" style="color:#6c63ff">toolpipe-ads@sharebot.net</a> with tx hash</p>' +
+              '<p style="margin-top:8px;color:#64748b;font-size:0.75rem;text-align:center">Or email <a href="mailto:ouryellowbuddha@gmail.com?subject=Payment%20' + oid + '" style="color:#6c63ff">ouryellowbuddha@gmail.com</a> with tx hash</p>' +
               '</div>';
             status.style.color = '#e0e0e0';
             status.style.display = 'block';
@@ -5037,13 +5037,13 @@ h2{font-size:1.3rem;color:#fff;margin:40px 0 16px;text-align:center}
 <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-bottom:16px">
 <div style="color:#fff;font-weight:600;margin-bottom:8px;">Ethereum / USDC / USDT / ERC-20 Tokens</div>
 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-<code style="background:#0a0a0a;color:#22c55e;padding:8px 12px;border-radius:6px;font-size:0.85rem;word-break:break-all;flex:1">0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6</code>
-<button onclick="navigator.clipboard.writeText('0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)" style="background:#6c63ff;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap">Copy</button>
+<code style="background:#0a0a0a;color:#22c55e;padding:8px 12px;border-radius:6px;font-size:0.85rem;word-break:break-all;flex:1">0x170bAA39eC38aFEba8ce5847Bc231965aa200d00</code>
+<button onclick="navigator.clipboard.writeText('0x170bAA39eC38aFEba8ce5847Bc231965aa200d00');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)" style="background:#6c63ff;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap">Copy</button>
 </div>
 <p style="color:#64748b;font-size:0.8rem;margin-top:8px;">Supports: ETH, USDC, USDT, DAI, and any ERC-20 token on Ethereum mainnet, Polygon, Arbitrum, Base, or Optimism.</p>
 </div>
 <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:16px">
-<p style="color:#94a3b8;font-size:0.9rem;">After sending, email <a href="mailto:toolpipe-ads@sharebot.net" style="color:#6c63ff">toolpipe-ads@sharebot.net</a> with your tx hash to receive Pro API access.</p>
+<p style="color:#94a3b8;font-size:0.9rem;">After sending, email <a href="mailto:ouryellowbuddha@gmail.com" style="color:#6c63ff">ouryellowbuddha@gmail.com</a> with your tx hash to receive Pro API access.</p>
 </div>
 </div>
 
@@ -5258,7 +5258,7 @@ async def ai_plugin_manifest():
         "auth": {"type": "none"},
         "api": {"type": "openapi", "url": f"{base}/openapi.json"},
         "logo_url": f"{base}/favicon.ico",
-        "contact_email": "toolpipe-ads@sharebot.net",
+        "contact_email": "ouryellowbuddha@gmail.com",
         "legal_info_url": f"{base}/terms",
     }
 
@@ -7837,7 +7837,7 @@ async def openapi_spec():
             "title": "ToolPipe API",
             "description": "130+ free developer utility APIs. JSON formatting, QR codes, hashing, UUID, DNS, regex, JWT, SQL formatting, and more. Free tier: 100 calls/day. Pro: 10,000 calls/day.",
             "version": "1.9.0",
-            "contact": {"email": "toolpipe-ads@sharebot.net"},
+            "contact": {"email": "ouryellowbuddha@gmail.com"},
             "license": {"name": "MIT"},
         },
         "servers": [{"url": "https://toolpipe.dev", "description": "Production"}],
@@ -11039,7 +11039,7 @@ async def a2a_agent_card():
         },
         "provider": {
             "organization": "COSAI Labs",
-            "email": "toolpipe-ads@sharebot.net",
+            "email": "ouryellowbuddha@gmail.com",
         },
     }
 
@@ -11294,8 +11294,8 @@ async def a2a_discovery():
         "payment": {
             "crypto": True,
             "wallets": {
-                "ethereum": "0xBCF464909b748d720fd5DDA25ad3d313Dd4b53D6",
-                "solana": "2guKDsPScRpCCKuVEGKBPFvodSNtZF4ArYeSC6oy6pf6",
+                "ethereum": "0x170bAA39eC38aFEba8ce5847Bc231965aa200d00",
+                "solana": "AP2EeHDf6qQtZAY25QxcR2HG5aULJ2Ny5m81Unmw2guw",
             },
             "payment_endpoint": f"{base}/payments/create",
         },

@@ -5,7 +5,7 @@ const screenshotDir = '/home/GerritRoskaBot/make-money-30day-challenge/scripts';
 
 (async () => {
   const usernames = ['toolpipe', 'toolpipe-dev', 'toolpipe-io', 'toolpipe-api'];
-  const email = 'toolpipe-ads@sharebot.net';
+  const email = 'ouryellowbuddha@gmail.com';
   const password = 'TP-Npm-2026-Secure!';
 
   // Use chrome-headless-shell which doesn't need fontconfig

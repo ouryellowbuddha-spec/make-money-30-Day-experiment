@@ -17,7 +17,7 @@ GITHUB_URL="https://github.com/COSAI-Labs/make-money-30day-challenge/tree/master
 NPM_PACKAGE="@cosai-labs/toolpipe-mcp-server"
 REMOTE_URL="https://toolpipe.dev/mcp"
 REGISTRY_NAME="io.github.COSAI-Labs/toolpipe-mcp-server"
-EMAIL="toolpipe-ads@sharebot.net"
+EMAIL="ouryellowbuddha@gmail.com"
 CATEGORY="development"
 
 echo "Server: $SERVER_NAME"
