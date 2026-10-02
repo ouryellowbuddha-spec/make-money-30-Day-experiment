@@ -5229,7 +5229,7 @@ async def mcp_info():
     base = _get_tunnel_url()
     return {
         "name": "ToolPipe MCP Server",
-        "version": "1.18.0",
+        "version": "1.19.0",
         "protocol": "MCP (Model Context Protocol)",
         "transport": "Streamable HTTP",
         "tools": 156,
@@ -5270,12 +5270,14 @@ async def well_known_mcp():
     return {
         "mcp_version": "2025-03-26",
         "name": "ToolPipe",
-        "description": "230+ developer tools via MCP: JSON, QR, hash, UUID, DNS, regex, JWT, SQL, XML, YAML, PDF, code review, fake data, Dockerfile gen, and more",
+        "description": "240+ developer utility APIs, with 55 tools in the installable ToolPipe MCP package: JSON, QR, hash, UUID, DNS, regex, JWT, SQL, XML, YAML, PDF, code review, fake data, Dockerfile generation, and more",
         "url": f"{base}/mcp",
         "transport": "streamable-http",
         "tools_count": 156,
-        "total_api_endpoints": 230,
-        "npm_package": "@toolpipe/mcp-server",
+        "total_api_endpoints": 240,
+        "npm_package": "@cosai-labs/toolpipe-mcp-server",
+        "npm_package_tools_count": 55,
+        "npm_registry": "https://npm.pkg.github.com",
         "pricing": {
             "free_tier": True,
             "free_daily_limit": 100,
@@ -5285,7 +5287,7 @@ async def well_known_mcp():
         "setup": {
             "claude_desktop": {"mcpServers": {"toolpipe": {"url": f"{base}/mcp"}}},
             "claude_code": f"claude mcp add toolpipe {base}/mcp",
-            "npx": "npx -y @toolpipe/mcp-server",
+            "npx": "npx -y @cosai-labs/toolpipe-mcp-server",
         },
         "documentation": f"{base}/quickstart",
     }
@@ -5327,7 +5329,7 @@ async def api_info():
     base = _get_tunnel_url()
     return {
         "name": "ToolPipe API",
-        "version": "1.18.0",
+        "version": "1.19.0",
         "base_url": base,
         "total_endpoints": 230,
         "mcp_server": f"{base}/mcp",
@@ -11096,7 +11098,7 @@ async def agent_discover():
     return {
         "service": "ToolPipe",
         "tagline": "230+ developer APIs for AI agents and developers",
-        "version": "1.18.0",
+        "version": "1.19.0",
         "total_endpoints": 230,
         "mcp_tools": 156,
         "free_tier": {
@@ -11318,7 +11320,7 @@ async def a2a_discovery():
     return {
         "name": "ToolPipe",
         "description": "Developer utility API service with 240+ endpoints and 166 MCP tools.",
-        "version": "1.18.0",
+        "version": "1.19.0",
         "protocol": "a2a",
         "capabilities": [
             "json-formatting", "qr-code-generation", "hashing", "uuid-generation",
@@ -11355,7 +11357,7 @@ async def mcp_server_card():
     return {
         "serverInfo": {
             "name": "ToolPipe",
-            "version": "1.18.0",
+            "version": "1.19.0",
             "description": "240+ developer utility APIs and 55 MCP tools. JSON formatting, QR codes, hashing, code review, DNS lookup, web scraping, domain intel, bulk operations, web monitoring, and more.",
         },
         "authentication": {
