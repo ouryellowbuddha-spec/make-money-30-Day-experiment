@@ -26,7 +26,7 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 from fastapi import FastAPI, File, Form, HTTPException, Query, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from pydantic import BaseModel, HttpUrl
@@ -3752,7 +3752,7 @@ async def create_payment(req: PaymentRequest, request: Request):
 
 
 @app.post("/payments/webhook")
-async def payment_webhook(request: Request):
+async def payment_webhook(request: Request) -> PlainTextResponse:
     """Accept authenticated OxaPay and NOWPayments payment callbacks only."""
     body = await request.body()
     try:
@@ -3818,7 +3818,9 @@ async def payment_webhook(request: Request):
                 upgrade_api_key(email, tier)
             conn.close()
 
-    return {"status": "ok"}
+    # OxaPay expects an HTTP 200 response with the literal body "ok" to
+    # acknowledge delivery and stop retrying the callback.
+    return PlainTextResponse("ok")
 
 
 @app.get("/payments/success", response_class=HTMLResponse)
