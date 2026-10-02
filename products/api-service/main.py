@@ -6,6 +6,7 @@ Fast, reliable developer tools via REST API.
 import io
 import json
 import hashlib
+import hmac
 import base64
 import re
 import time
@@ -511,8 +512,8 @@ def check_api_key(key: str) -> dict | None:
 
 # --- Crypto Payment Gateway Integration ---
 # OxaPay Merchant API (primary gateway)
-OXAPAY_MERCHANT_KEY = os.environ.get("OXAPAY_MERCHANT_KEY", "sandbox")
-OXAPAY_API_URL = "https://api.oxapay.com/merchants/request"
+OXAPAY_MERCHANT_KEY = os.environ.get("OXAPAY_MERCHANT_KEY", "").strip()
+OXAPAY_API_URL = "https://api.oxapay.com/v1/payment/invoice"
 # NOWPayments (backup gateway, no KYC)
 NOWPAYMENTS_API_KEY = os.environ.get("NOWPAYMENTS_API_KEY", "")
 PAYMENTS_DB = Path(__file__).parent / "data" / "payments.db"
@@ -582,31 +583,33 @@ async def create_payment_invoice(amount: float, email: str, tier: str, order_id:
         "Solana (SOL, USDC-SPL)": SOLANA_WALLET,
     }
 
-    # Try OxaPay Merchant API first
-    try:
+    # OxaPay v1 Merchant API. Without a live key, fall through to configured
+    # NOWPayments or the explicitly disclosed direct-wallet option.
+    if OXAPAY_MERCHANT_KEY:
+      try:
         payload = {
-            "merchant": OXAPAY_MERCHANT_KEY,
             "amount": amount,
             "currency": "USD",
-            "lifeTime": 60,
-            "feePaidByPayer": 1,
-            "callbackUrl": callback_url,
-            "returnUrl": return_url,
+            "lifetime": 60,
+            "fee_paid_by_payer": 1,
+            "callback_url": callback_url,
+            "return_url": return_url,
             "email": email,
-            "orderId": order_id,
+            "order_id": order_id,
             "description": f"ToolPipe {tier.title()} Plan",
         }
         async with httpx.AsyncClient(timeout=15) as client:
             resp = await client.post(
                 OXAPAY_API_URL,
                 json=payload,
-                headers={"Content-Type": "application/json"},
+                headers={"Content-Type": "application/json", "merchant_api_key": OXAPAY_MERCHANT_KEY},
             )
             data = resp.json()
 
-        if data.get("result") == 100 and data.get("payLink"):
-            track_id = str(data.get("trackId", ""))
-            payment_url = data.get("payLink", "")
+        invoice = data.get("data") or {}
+        if resp.is_success and data.get("status") == 200 and invoice.get("track_id") and invoice.get("payment_url"):
+            track_id = str(invoice["track_id"])
+            payment_url = invoice["payment_url"]
             with _payments_lock:
                 conn = sqlite3.connect(str(PAYMENTS_DB))
                 conn.execute(
@@ -616,7 +619,7 @@ async def create_payment_invoice(amount: float, email: str, tier: str, order_id:
                 conn.commit()
                 conn.close()
             return {"success": True, "gateway": "oxapay", "payment_url": payment_url, "track_id": track_id, "order_id": order_id}
-    except Exception:
+      except Exception:
         pass
 
     # Try NOWPayments as backup
@@ -3732,14 +3735,21 @@ async def create_payment(req: PaymentRequest, request: Request):
 @app.post("/payments/webhook")
 async def payment_webhook(request: Request):
     """Handles webhooks from OxaPay, NOWPayments, or generic payment callbacks."""
+    body = await request.body()
     try:
-        data = await request.json()
+        data = json.loads(body)
     except Exception:
-        body = await request.body()
-        try:
-            data = json.loads(body)
-        except Exception:
-            return {"status": "error", "message": "Invalid payload"}
+        raise HTTPException(status_code=400, detail="Invalid payload")
+
+    # OxaPay requires HMAC-SHA512 over the exact raw request body. Never let an
+    # unsigned callback grant a paid tier.
+    if data.get("type") == "invoice":
+        signature = request.headers.get("HMAC", "")
+        if not OXAPAY_MERCHANT_KEY or not signature:
+            raise HTTPException(status_code=401, detail="Missing OxaPay webhook signature")
+        expected = hmac.new(OXAPAY_MERCHANT_KEY.encode(), body, hashlib.sha512).hexdigest()
+        if not hmac.compare_digest(expected, signature.lower()):
+            raise HTTPException(status_code=401, detail="Invalid OxaPay webhook signature")
 
     # OxaPay v1 format
     track_id = data.get("trackId", data.get("track_id", ""))
@@ -3755,7 +3765,9 @@ async def payment_webhook(request: Request):
         if np_status in ("finished", "confirmed", "partially_paid"):
             status = "paid"
 
-    paid_statuses = ("Paid", "Confirming", "Complete", "paid", "complete", "finished", "confirmed")
+    # A payment is activated only after a confirmed Paid/finished callback.
+    # "Paying" and "Confirming" are intermediate states, not settlement.
+    paid_statuses = ("Paid", "paid", "complete", "finished", "confirmed")
     if status.lower() in [s.lower() for s in paid_statuses]:
         now = datetime.now(timezone.utc).isoformat()
         with _payments_lock:
