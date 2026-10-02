@@ -71,11 +71,11 @@ async function get(path) {
 // ---------------------------------------------------------------------------
 
 const server = new McpServer(
-  { name: "toolpipe", version: "1.18.0" },
+  { name: "toolpipe", version: "1.19.0" },
   {
     capabilities: { tools: {} },
     instructions:
-      "ToolPipe provides 45 developer utility APIs as MCP tools. " +
+      "ToolPipe provides 55 developer utility APIs as MCP tools. " +
       "JSON formatting/validation/schema, QR codes, hashing, UUID, base64, " +
       "markdown-to-HTML, URL shortener, regex tester/generator, text stats, " +
       "JWT decode/create, DNS lookup, HTTP headers/proxy, SSL check, password gen, " +

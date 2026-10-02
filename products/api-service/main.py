@@ -516,6 +516,7 @@ OXAPAY_MERCHANT_KEY = os.environ.get("OXAPAY_MERCHANT_KEY", "").strip()
 OXAPAY_API_URL = "https://api.oxapay.com/v1/payment/invoice"
 # NOWPayments (backup gateway, no KYC)
 NOWPAYMENTS_API_KEY = os.environ.get("NOWPAYMENTS_API_KEY", "")
+NOWPAYMENTS_IPN_SECRET = os.environ.get("NOWPAYMENTS_IPN_SECRET", "").strip()
 PAYMENTS_DB = Path(__file__).parent / "data" / "payments.db"
 _payments_lock = threading.Lock()
 
@@ -3734,22 +3735,35 @@ async def create_payment(req: PaymentRequest, request: Request):
 
 @app.post("/payments/webhook")
 async def payment_webhook(request: Request):
-    """Handles webhooks from OxaPay, NOWPayments, or generic payment callbacks."""
+    """Accept authenticated OxaPay and NOWPayments payment callbacks only."""
     body = await request.body()
     try:
         data = json.loads(body)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid payload")
 
-    # OxaPay requires HMAC-SHA512 over the exact raw request body. Never let an
-    # unsigned callback grant a paid tier.
-    if data.get("type") == "invoice":
+    # OxaPay requires HMAC-SHA512 over the exact raw request body. Do not infer
+    # provider identity from optional fields: an unsigned payload must never
+    # grant a paid tier.
+    if data.get("type") in ("invoice", "white_label", "static_address", "payment_link", "donation"):
         signature = request.headers.get("HMAC", "")
         if not OXAPAY_MERCHANT_KEY or not signature:
             raise HTTPException(status_code=401, detail="Missing OxaPay webhook signature")
         expected = hmac.new(OXAPAY_MERCHANT_KEY.encode(), body, hashlib.sha512).hexdigest()
         if not hmac.compare_digest(expected, signature.lower()):
             raise HTTPException(status_code=401, detail="Invalid OxaPay webhook signature")
+    elif "payment_id" in data:
+        # NOWPayments signs a deterministically sorted JSON representation with
+        # the IPN secret. See their IPN signature verification requirements.
+        signature = request.headers.get("x-nowpayments-sig", "")
+        if not NOWPAYMENTS_IPN_SECRET or not signature:
+            raise HTTPException(status_code=401, detail="Missing NOWPayments webhook signature")
+        canonical = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        expected = hmac.new(NOWPAYMENTS_IPN_SECRET.encode(), canonical.encode(), hashlib.sha512).hexdigest()
+        if not hmac.compare_digest(expected, signature.lower()):
+            raise HTTPException(status_code=401, detail="Invalid NOWPayments webhook signature")
+    else:
+        raise HTTPException(status_code=401, detail="Unrecognized or unsigned payment callback")
 
     # OxaPay v1 format
     track_id = data.get("trackId", data.get("track_id", ""))
@@ -3762,7 +3776,7 @@ async def payment_webhook(request: Request):
         track_id = str(data.get("payment_id", ""))
     if not status and data.get("payment_status"):
         np_status = data["payment_status"]
-        if np_status in ("finished", "confirmed", "partially_paid"):
+        if np_status == "finished":
             status = "paid"
 
     # A payment is activated only after a confirmed Paid/finished callback.
