@@ -102,8 +102,15 @@ claude mcp add toolpipe -- npx -y @cosai-labs/toolpipe-mcp-server
 ### Direct Usage
 
 ```bash
+npm config set @cosai-labs:registry https://npm.pkg.github.com
+# Add a GitHub token with read:packages access to ~/.npmrc:
+# //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
 npx @cosai-labs/toolpipe-mcp-server
 ```
+
+The GitHub Packages registry requires authentication even for public package
+downloads. Without that registry mapping and token, npm will look on the public
+npm registry, where this package is not currently published.
 
 ## Environment Variables
 
@@ -141,9 +148,9 @@ Get an API key at [https://toolpipe.dev](https://toolpipe.dev).
 ## Publishing
 
 The package currently publishes to GitHub Packages under
-`@cosai-labs/toolpipe-mcp-server`. Configure npm for `https://npm.pkg.github.com`
-and authenticate with a GitHub token that can read packages before installing.
-The package is not published to the public npm registry yet.
+`@cosai-labs/toolpipe-mcp-server`. Installing it requires a GitHub token with
+`read:packages`; publishing requires a token with package write access. The
+package is not published to the public npm registry yet.
 
 ## License
 
