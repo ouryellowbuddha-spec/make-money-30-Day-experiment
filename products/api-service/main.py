@@ -3705,6 +3705,24 @@ class PaymentRequest(BaseModel):
     tier: str = "pro"
 
 
+@app.get("/payments/providers")
+async def payment_providers():
+    """Report available checkout methods without exposing provider credentials."""
+    return {
+        "configured": [
+            name for name, enabled in (
+                ("oxapay", bool(OXAPAY_MERCHANT_KEY)),
+                ("nowpayments", bool(NOWPAYMENTS_API_KEY)),
+                ("direct_crypto", True),
+            ) if enabled
+        ],
+        "preferred": "oxapay" if OXAPAY_MERCHANT_KEY else (
+            "nowpayments" if NOWPAYMENTS_API_KEY else "direct_crypto"
+        ),
+        "automated_checkout": bool(OXAPAY_MERCHANT_KEY or NOWPAYMENTS_API_KEY),
+    }
+
+
 @app.post("/payments/create")
 async def create_payment(req: PaymentRequest, request: Request):
     email = req.email.strip().lower()

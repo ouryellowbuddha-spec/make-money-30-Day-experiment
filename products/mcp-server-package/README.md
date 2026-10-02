@@ -128,7 +128,7 @@ Get an API key at [https://toolpipe.dev](https://toolpipe.dev).
 
 ## Why ToolPipe?
 
-- **35 tools in one package**: No need to install multiple MCP servers
+- **55 tools in one package**: No need to install multiple MCP servers
 - **Works out of the box**: No API key needed for free tier
 - **AI-agent friendly**: Designed for Claude, GPT, and other LLM agents
 - **Fast**: Sub-100ms response times for most tools
@@ -137,6 +137,13 @@ Get an API key at [https://toolpipe.dev](https://toolpipe.dev).
 ## Requirements
 
 - Node.js 18 or later
+
+## Publishing
+
+The package currently publishes to GitHub Packages under
+`@cosai-labs/toolpipe-mcp-server`. Configure npm for `https://npm.pkg.github.com`
+and authenticate with a GitHub token that can read packages before installing.
+The package is not published to the public npm registry yet.
 
 ## License
 

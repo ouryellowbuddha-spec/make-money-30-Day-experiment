@@ -62,5 +62,20 @@ curl -X POST https://toolpipe.dev/text/analyze \
 - Pro: 1,000 req/min ($9.99/mo)
 - Enterprise: Unlimited ($49.99/mo)
 
+## Crypto checkout setup
+
+The checkout supports OxaPay invoices, NOWPayments invoices as a fallback, and
+direct wallet payments. Set `OXAPAY_MERCHANT_KEY` in the API service environment
+to enable automated OxaPay checkout. OxaPay sends signed callbacks to
+`POST /payments/webhook`; keep this endpoint publicly reachable and configure
+that callback URL in the OxaPay merchant settings. Never put the merchant key in
+source control or a client application.
+
+Use `GET /payments/providers` to confirm which gateways are configured. It
+returns provider names and the preferred checkout method, never credentials.
+`POST /payments/create` creates an invoice; paid API keys are upgraded only after
+a verified provider callback. When no invoice provider is configured, checkout
+returns direct wallet instructions and payment verification remains manual/on-chain.
+
 ## SDKs
 Python and JavaScript client libraries in `../digital-products/api-starter-kit/`.
